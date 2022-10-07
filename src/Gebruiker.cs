@@ -5,7 +5,8 @@ namespace database{
         public Gebruiker(string NewEmail){
             Email = NewEmail; 
         }   
-
-        protected Gebruiker(){}
+        protected Gebruiker(){
+            
+        }
     }
 }

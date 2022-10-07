@@ -1,4 +1,5 @@
 namespace database {
+    [Owned]
     public class DateTimeBereik{
         public DateTime Begin {get; set;}
         public DateTime? Eind {get; set;}

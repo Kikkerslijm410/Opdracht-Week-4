@@ -1,18 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace database{
     public class DatabaseContext : DbContext{
         //all tables:
-        public DbSet<Gebruiker> DbGebruiker {get; set;}
-        public DbSet<Gast> DbGast {get; set;}
-        public DbSet<GastInfo> DbGastInfo {get; set;}
-        public DbSet<Medewerker> DbMedewerker {get; set;}
-        public DbSet<Reservering> DbReservering {get; set;}
-        public DbSet<Attractie> DbAttractie {get; set;}
+        public DbSet<Gebruiker>? DbGebruiker {get; set;}
+        public DbSet<Gast>? DbGast {get; set;}
+        public DbSet<GastInfo>? DbGastInfo {get; set;}
+        public DbSet<Medewerker>? DbMedewerker {get; set;}
+        public DbSet<Reservering>? DbReservering {get; set;}
+        public DbSet<Attractie>? DbAttractie {get; set;}
 
         //Makes the keys
         protected override void OnModelCreating(ModelBuilder builder){
             //builder.Entity<Gebruiker>().ToTable("Mafklapper"); //other way of phrasing it
+            //Primary keys
             builder.Entity<Gebruiker>().HasKey(u => u.Id_Gebruiker); 
             builder.Entity<Gast>().HasKey(u => u.Id_Gast);
             builder.Entity<GastInfo>().HasKey(u => u.Id_GastInfo);
@@ -21,6 +20,12 @@ namespace database{
             builder.Entity<Reservering>().HasKey(u => u.Id_Reservering);
             builder.Entity<Attractie>().HasKey(u => u.Id_Attractie);
 
+            //Owned keys
+            builder.Entity<GastInfo>().OwnsOne(o => o.coordinaat);
+            builder.Entity<Attractie>().OwnsOne(o => o.DTB_Attractie);
+            builder.Entity<Reservering>().OwnsOne(o => o.DTB_Reservering);
+
+            //Foreign keys
             // Die builder.entity en dan .hasOne of .hasMany 
             // gooi daar een lambda in naar het id van het object in kwestie. 
             // En daarachter kan je nog een .withOne of withMany doen om hem compleet te maken

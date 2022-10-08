@@ -1,46 +1,56 @@
 namespace database{
     public class DatabaseContext : DbContext{
         //all tables:
-        public DbSet<Gebruiker>? DbGebruiker {get; set;}
+        public DbSet<Attractie>? DbAttractie {get; set;}
         public DbSet<Gast>? DbGast {get; set;}
         public DbSet<GastInfo>? DbGastInfo {get; set;}
+        public DbSet<Gebruiker>? DbGebruiker {get; set;}
         public DbSet<Medewerker>? DbMedewerker {get; set;}
+        public DbSet<Onderhoud>? DbOnderhoud {get; set;}
         public DbSet<Reservering>? DbReservering {get; set;}
-        public DbSet<Attractie>? DbAttractie {get; set;}
+
 
         //Makes the keys
         protected override void OnModelCreating(ModelBuilder builder){
             //builder.Entity<Gebruiker>().ToTable("Mafklapper"); //other way of phrasing it
 
+            //Attractie
             var Attractie = builder.Entity<Attractie>();
+                Attractie.ToTable("Attractie");
                 Attractie.HasKey(u => u.Id_Attractie);
+                Attractie.OwnsOne(o => o.DTB_Attractie);
 
+            //Gast
             var Gast = builder.Entity<Gast>();
-                Gast.HasKey(u => u.Id_GebruikerGast);
-
+                Gast.ToTable("Gast");
+                Gast.HasOne(g => g.Begeleider)
+                    .WithOne(g => g.Begeleid);
+            
+            //GastInfo
             var GastInfo = builder.Entity<GastInfo>();
-                .HasKey(u => u.Id_GastInfo);
+                GastInfo.HasKey(u => u.Id_GastInfo);
+                GastInfo.OwnsOne(o => o.coordinaat);
 
-            builder.Entity<Gebruiker>()
-                .HasKey(u => u.Id_Gebruiker); 
+            //Gebruiker
+            var Gebruiker = builder.Entity<Gebruiker>();
+                Gebruiker.ToTable("Gebruiker");
+                Gebruiker.HasKey(u => u.Email); 
 
-            builder.Entity<Medewerker>()
-                .HasKey(u => u.Id_Medewerker);
+            //Medewerker
+            var Medewerker = builder.Entity<Medewerker>();
+                Medewerker.HasKey(u => u.Id_Medewerker);
 
-            builder.Entity<Onderhoud>() 
-                .HasKey(u => u.Id_Onderhoud);
+            //Onderhoud
+            var Onderhoud = builder.Entity<Onderhoud>(); 
+                Onderhoud.HasKey(u => u.Id_Onderhoud);
 
-            builder.Entity<Reservering>()
-                .HasKey(u => u.Id_Reservering);
+            //Reservering
+            var Reservering = builder.Entity<Reservering>();
+                Reservering.HasKey(u => u.Id_Reservering);
+                Reservering.OwnsOne(o => o.DTB_Reservering);
+                Reservering.HasMany(f => f.GereserverdeAttracties).WithOne(f => f.reservering);
 
-
-
-            //cant be added to the rest of the keys so they can stand here like losers
-            builder.Entity<GastInfo>().OwnsOne(o => o.coordinaat);
-            builder.Entity<Attractie>().OwnsOne(o => o.DTB_Attractie);
-            builder.Entity<Reservering>().OwnsOne(o => o.DTB_Reservering);
-
-            builder.Entity<Gast>().HasOne(f => f.Id_GebruikerGast).WithOne();
+            builder.Entity<Gast>().HasOne(f => f.Id_GebruikerGast);
             // Die builder.entity en dan .hasOne of .hasMany 
             // gooi daar een lambda in naar het id van het object in kwestie. 
             // En daarachter kan je nog een .withOne of withMany doen om hem compleet te maken
@@ -52,4 +62,5 @@ namespace database{
             builder.UseSqlServer("Server=" + computer + "\\SQLEXPRESS01;Initial Catalog=YourDatabase;Integrated Security=true");
         }
     }
-}//gast id is een foreign key naar gebruiker id (hetzelfde geld voor medewerker id)
+}
+//gast id is een foreign key naar gebruiker id (hetzelfde geld voor medewerker id)

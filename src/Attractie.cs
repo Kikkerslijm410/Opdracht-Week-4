@@ -3,13 +3,14 @@ namespace database{
         public int Id_Attractie {get; set;}
         public string? Naam {get; set;}
         public DateTimeBereik? DTB_Attractie {get; set;}
+        public Reservering? reservering {get; set;}
 
-        public Task<bool> OnderhoudBezig (DatabaseContext c){
-            return
+        public async Task<bool> OnderhoudBezig (DatabaseContext c){
+            return await
         }
 
-        public Task<bool> Vrij (DatabaseContext c, DateTimeBereik d){
-            return
+        public async Task<bool> Vrij (DatabaseContext c, DateTimeBereik d){
+            return await
         }    
     }
 }

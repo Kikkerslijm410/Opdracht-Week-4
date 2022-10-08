@@ -1,14 +1,18 @@
 namespace database{
-    public class Gast{
+    public class Gast : Gebruiker{
         public Gebruiker Id_GebruikerGast {get; set;}
         public int Credits {get; set;}
         public DateTime Geboortedatum {get; set;}
         public DateTime EersteBezoek {get; set;}
+        public Gast? Begeleider {get;set;}
+        public Gast? Begeleid {get;set;}
+        public Attractie? FavorieteAttractie {get;set;}
+        public GastInfo GastInformatie;
+        public int GastinfoId {get;set;}
+        public List<Reservering> reservering {get;set;} = null!;
 
-        public Gast(string email){
-            new Gebruiker(email);
-            Geboortedatum = DateTime.Today;
-            EersteBezoek = DateTime.Today;
+        public Gast(string Email) : base(Email){
+            this.GastInformatie = new GastInfo(this);
         }
     }
 }

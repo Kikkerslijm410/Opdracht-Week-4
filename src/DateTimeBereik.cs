@@ -17,5 +17,12 @@ namespace database {
             }
             return false;
         }
+
+        public bool OverlaptV2 (DateTimeBereik that){
+            if (that.Eind < Begin && that.Begin > Eind){
+                return true;
+            }
+            return false;
+        }
     }
 }

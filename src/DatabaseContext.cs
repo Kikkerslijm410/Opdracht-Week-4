@@ -1,6 +1,5 @@
 namespace database{
     public class DatabaseContext : DbContext{
-        //all tables:
         public DbSet<Attractie>? DbAttractie {get; set;}
         public DbSet<Gast>? DbGast {get; set;}
         public DbSet<GastInfo>? DbGastInfo {get; set;}
@@ -9,7 +8,6 @@ namespace database{
         public DbSet<Onderhoud>? DbOnderhoud {get; set;}
         public DbSet<Reservering>? DbReservering {get; set;}
 
-        //Makes the keys
         protected override void OnModelCreating(ModelBuilder builder){
 
             //Attractie
@@ -57,10 +55,6 @@ namespace database{
                 // Reservering.HasKey(u => u.Id_Reservering);
                 Reservering.OwnsOne(o => o.DTB_Reservering);
                 Reservering.HasMany(f => f.GereserverdeAttracties).WithOne(f => f.reservering);
-
-            // Die builder.entity en dan .hasOne of .hasMany 
-            // gooi daar een lambda in naar het id van het object in kwestie. 
-            // En daarachter kan je nog een .withOne of withMany doen om hem compleet te maken
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder){
@@ -70,4 +64,3 @@ namespace database{
         }
     }
 }
-//gast id is een foreign key naar gebruiker id (hetzelfde geld voor medewerker id)

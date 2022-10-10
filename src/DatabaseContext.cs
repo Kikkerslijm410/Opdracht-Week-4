@@ -8,14 +8,14 @@ namespace database{
         public DbSet<Onderhoud>? DbOnderhoud {get; set;}
         public DbSet<Reservering>? DbReservering {get; set;}
 
-        public async Task<bool> boek (Gast g, Attractie a, DateTimeBereik d){
+        public async Task<bool> Boek (Gast g, Attractie a, DateTimeBereik d){
             await a.Semaphore.WaitAsync();
             try { 
                 if (a.reservering == null){
                     var reservering = new Reservering {gast = g, DTB_Reservering = d};
                     if (g.Credits >= 1){
                     g.Credits--;
-                    reservering.GereserverdeAttracties.Add(a);
+                    reservering.GereserverdeAttracties?.Add(a);
                     this.SaveChanges();
                     return true;
                     }

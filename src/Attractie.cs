@@ -4,6 +4,7 @@ namespace database{
         public string? Naam {get; set;}
         public Reservering? reservering {get; set;}
         public List<Onderhoud> onderhoud = new List<Onderhoud>();
+        public readonly SemaphoreSlim Semaphore = new SemaphoreSlim(1, 1);
         
         public Attractie(string naam){
             Naam = naam;

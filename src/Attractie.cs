@@ -4,6 +4,10 @@ namespace database{
         public string? Naam {get; set;}
         public Reservering? reservering {get; set;}
         public List<Onderhoud> onderhoud = new List<Onderhoud>();
+        
+        public Attractie(string naam){
+            Naam = naam;
+        }
 
         // public async Task<bool> OnderhoudBezig (DatabaseContext c){
         //     return await

@@ -1,7 +1,7 @@
 namespace database{
     public class DatabaseContext : DbContext{
         public DbSet<Attractie>? DbAttractie {get; set;}
-        public DbSet<Gast>? DbGast {get; set;}
+        public DbSet<Gast> DbGast {get; set;} = null!;
         public DbSet<GastInfo>? DbGastInfo {get; set;}
         public DbSet<Gebruiker>? DbGebruiker {get; set;}
         public DbSet<Medewerker>? DbMedewerker {get; set;}
@@ -9,27 +9,27 @@ namespace database{
         public DbSet<Reservering>? DbReservering {get; set;}
 
         public async Task<bool> Boek (Gast g, Attractie a, DateTimeBereik d){
-            await a.Semaphore.WaitAsync();
+            await a.Satan.WaitAsync();
             try { 
-                if (a.reservering == null){
+                if (a.reservering == null && a != null){
                     var reservering = new Reservering {gast = g, DTB_Reservering = d};
                     if (g.Credits >= 1){
-                    g.Credits--;
-                    reservering.GereserverdeAttracties?.Add(a);
-                    this.SaveChanges();
-                    return true;
+                        g.Credits--;
+                        reservering.GereserverdeAttracties?.Add(a);
+                        this.SaveChanges();
+                        return true;
                     }
                 }
                 return false;
             }
-            finally { a.Semaphore.Release(); }
+            finally {a.Satan.Release();}
         }
         protected override void OnModelCreating(ModelBuilder builder){
 
             //Attractie
             var Attractie = builder.Entity<Attractie>();
                 Attractie.ToTable("Attractie");
-                Attractie.HasKey(u => u.Id_Attractie);
+                Attractie.HasKey(u => u.Id);
 
             //Gast
             var Gast = builder.Entity<Gast>();
@@ -40,7 +40,7 @@ namespace database{
             //GastInfo
             var GastInfo = builder.Entity<GastInfo>();
                 // GastInfo.ToTable("Gastinfo");
-                GastInfo.HasKey(u => u.Id_GastInfo);
+                GastInfo.HasKey(u => u.Id);
                 GastInfo.OwnsOne(o => o.coordinaat);
                 GastInfo.HasOne(g => g.gast)
                     .WithOne(g => g.GastInformatie)
@@ -58,11 +58,11 @@ namespace database{
             //Onderhoud
             var Onderhoud = builder.Entity<Onderhoud>(); 
                 Onderhoud.ToTable("Onderhoud");
-                Onderhoud.HasKey(u => u.Id_Onderhoud);
+                Onderhoud.HasKey(u => u.Id);
                 //Onderhoud.OwnsOne(o => o.DTB_Onderhoud);
                 Onderhoud.HasOne(g => g.attractie)
                     .WithMany(g => g.onderhoud)
-                    .HasForeignKey(g => g.Id_Onderhoud)
+                    .HasForeignKey(g => g.Id)
                     .IsRequired();
 
             //Reservering
@@ -75,8 +75,8 @@ namespace database{
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder){
             var computer = Environment.MachineName;
-            //DESKTOP-6PE5SC4\SQLEXPRESS01
-            builder.UseSqlServer("Server=" + computer + "\\SQLEXPRESS01;Initial Catalog=YourDatabase;Integrated Security=true");
+            //DESKTOP-6PE5SC4\\SQLEXPRESS01
+            builder.UseSqlServer("Server=" + computer + "\\SQLEXPRESS01;Initial Catalog=Test;Integrated Security=true");
         }
     }
 }

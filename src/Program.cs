@@ -1,4 +1,5 @@
 ﻿global using Microsoft.EntityFrameworkCore; 
+global using Microsoft.EntityFrameworkCore.InMemory;
 namespace database{
 public class MainClass
 {

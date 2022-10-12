@@ -1,6 +1,6 @@
 namespace database{
     public class Gast : Gebruiker{
-        public int Id_GebruikerGast {get; set;}
+        public int Id {get; set;}
         public int Credits {get; set;}
         public int GastinfoId {get;set;}
         public DateTime Geboortedatum {get; set;}

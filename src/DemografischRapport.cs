@@ -17,7 +17,7 @@ namespace database{
 
             ret += $"De oudste gast heeft een leeftijd van { await HoogsteLeeftijd() } \n";
 
-            ret += $"{ await FavorietCorrect() } gasten hebben de favoriete attractie inderdaad het vaakst bezocht. \n";
+            //ret += $"{ await FavorietCorrect() } gasten hebben de favoriete attractie inderdaad het vaakst bezocht. \n";
 
             return ret;
         }
@@ -28,7 +28,7 @@ namespace database{
         private async Task<Gast?> GastBijGeboorteDatum(DateTime d) => await Task<Gast>.Run(() =>{return context.DbGast.First<Gast>(gast => gast.Geboortedatum == d);});
         private async Task<double> PercentageBejaarden() => await Task<double>.Run(() => {return (double)context.DbGast.Where<Gast>(gast => (EF.Functions.DateDiffDay(gast.Geboortedatum, DateTime.Now) / 365) > 79).Count()/(double)(context.DbGebruiker.Count())*100;});
         private async Task<int> HoogsteLeeftijd() => await Task<int>.Run(() => {return context.DbGast.Select(gast => (int)(EF.Functions.DateDiffDay(gast.Geboortedatum, DateTime.Now) / 365)).Max();});
-        private async Task<int> FavorietCorrect() => await Task<int>.Run(() => {return context.DbGast.Where(gast => gast.reservering.Where(k => gast.FavorieteAttractie !=null && k.GereserverdeAttracties.Equals(gast.FavorieteAttractie.Id_Attractie)).Count() > (gast.reservering.Count()/2)).Count();}); 
+        //private async Task<int> FavorietCorrect() => await Task<int>.Run(() => {return context.DbGast.Where(gast => gast.reservering.Where(k => gast.FavorieteAttractie !=null && k.GereserverdeAttracties.Equals(gast.FavorieteAttractie.Id)).Count() > (gast.reservering.Count()/2)).Count();}); 
         private IEnumerable<Gast> Blut (IEnumerable<Gast> b) => b.Where(b => b.Credits < 1);
     }
 }

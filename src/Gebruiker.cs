@@ -1,8 +1,9 @@
 namespace database{
     public class Gebruiker{
-        public string Email {get; set;} 
+        public string Email {get; set;} = null!;
         public Gebruiker(string NewEmail){
-            Email = NewEmail; 
+            this.Email = NewEmail; 
         }   
+        protected Gebruiker(){}
     }
 }

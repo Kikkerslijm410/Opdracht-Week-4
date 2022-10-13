@@ -1,12 +1,12 @@
 namespace database{
     public class DatabaseContext : DbContext{
-        public DbSet<Attractie>? DbAttractie {get; set;}
+        public DbSet<Attractie> DbAttractie {get; set;} = null!;
         public DbSet<Gast> DbGast {get; set;} = null!;
-        public DbSet<GastInfo>? DbGastInfo {get; set;}
-        public DbSet<Gebruiker>? DbGebruiker {get; set;}
-        public DbSet<Medewerker>? DbMedewerker {get; set;}
-        public DbSet<Onderhoud>? DbOnderhoud {get; set;}
-        public DbSet<Reservering>? DbReservering {get; set;}
+        public DbSet<GastInfo> DbGastInfo {get; set;} = null!;
+        public DbSet<Gebruiker> DbGebruiker {get; set;} = null!;
+        public DbSet<Medewerker> DbMedewerker {get; set;} = null!;
+        public DbSet<Onderhoud> DbOnderhoud {get; set;} = null!;
+        public DbSet<Reservering> DbReservering {get; set;} = null!;
 
         public async Task<bool> Boek (Gast g, Attractie a, DateTimeBereik d){
             await a.Satan.WaitAsync();

@@ -11,7 +11,6 @@ namespace database{
         public async Task<bool> Boek (Gast g, Attractie a, DateTimeBereik d){
             await a.Satan.WaitAsync();
             try { 
-                //a.reservering weg? is denk niet nodig aangezien er meerdere reserveringen kunnen zijn voor één attracties
                 if (a.reservering == null && a != null && g != null && d != null){
                     var reservering = new Reservering {gast = g, DTB_Reservering = d};
                     if (g.Credits >= 1){

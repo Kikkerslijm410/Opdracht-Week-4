@@ -13,6 +13,7 @@ namespace database{
 
         public Gast(string Email) : base(Email){
             this.GastInformatie = new GastInfo(this);
+            Credits = 1;
         }
     }
 }

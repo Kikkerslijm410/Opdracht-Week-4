@@ -3,51 +3,92 @@ using Xunit;
 using database;
 using Microsoft.EntityFrameworkCore.InMemory;
 
-public class UnitTest1{
-
-    //probably needs mocks, since you need every class
-    public Gast g = new Gast("LucasClavel@gmail");
-    public Attractie a = new Attractie("Draaimolen");
-    public DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
-    public DatabaseContext c = new DatabaseContext();
-    public Reservering r = new Reservering();
+public class BoekTest{
 
     [Fact]
+    //Test of de gast genoeg credits heeft (wel genoeg)
     public async void BoekWelCredits(){
         // Given
-        g.Credits = 10;
-        
+        Gast g = new Gast("LucasClavel@gmail");
+        Attractie a = new Attractie("Draaimolen");
+        DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
+        DatabaseContext c = new DatabaseContext();
         // When
         bool test = await c.Boek(g, a, d);
-
         // Then
         Assert.True(test);
     }
 
     [Fact]
-    public void BoekGeenCredits(){
+    //Test of de gast genoeg credits heeft (niet genoeg)
+    public async void BoekGeenCredits(){
         // Given
-    
+        Gast g = new Gast("LucasClavel@gmail");
+        Attractie a = new Attractie("Draaimolen");
+        DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
+        DatabaseContext c = new DatabaseContext();
+        g.Credits = 0;
         // When
-    
+        bool test = await c.Boek(g, a, d);
         // Then
+        Assert.False(test);
+
     }
 
     [Fact]
-    public void BoekWelAttractie(){
+    //Test of de attractie goed wordt meegegeven (niet null)
+    public async void BoekWelAttractie(){
         // Given
-    
+        Gast g = new Gast("LucasClavel@gmail");
+        Attractie a = new Attractie("Draaimolen");
+        DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
+        DatabaseContext c = new DatabaseContext();
         // When
-    
+        bool test = await c.Boek(g, a, d);
         // Then
+        Assert.True(test);
     }
 
     [Fact]
-    public void BoekGeenAttractie(){
+    //Test of de attractie goed wordt meegegeven (wel null)
+    public async void BoekGeenAttractie(){
         // Given
-    
+        Gast g = new Gast("LucasClavel@gmail");
+        Attractie a = new Attractie("Draaimolen");
+        a.Naam = null;
+        DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
+        DatabaseContext c = new DatabaseContext();    
         // When
-    
+        bool test = await c.Boek(g, a, d);
         // Then
+        Assert.False(test);
+    }
+
+    [Fact]
+    //Test of de datum goed wordt meegegeven
+    public async void BoekWelDatum(){
+        // Given
+        Gast g = new Gast("LucasClavel@gmail");
+        Attractie a = new Attractie("Draaimolen");
+        DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
+        DatabaseContext c = new DatabaseContext();    
+        // When
+        bool test = await c.Boek(g, a, d);
+        // Then
+        Assert.True(test);
+    }
+
+    [Fact]
+    //Test of Gast goed wordt meegegeven
+    public async void BoekWelGast(){
+        // Given
+        Gast g = new Gast("LucasClavel@gmail");
+        Attractie a = new Attractie("Draaimolen");
+        DateTimeBereik d = new DateTimeBereik {Eind = DateTime.Today, Begin = DateTime.Today};
+        DatabaseContext c = new DatabaseContext();    
+        // When
+        bool test = await c.Boek(g, a, d);
+        // Then
+        Assert.True(test);
     }
 }

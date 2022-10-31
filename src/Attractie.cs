@@ -2,7 +2,7 @@ namespace database{
     public class Attractie{
         public int Id {get; set;}
         public string? Naam {get; set;}
-        public Reservering? reservering {get; set;}
+        public List<Reservering> reservering {get; set;}
         public List<Onderhoud> onderhoud = new List<Onderhoud>();
         public readonly SemaphoreSlim Satan = new SemaphoreSlim(1, 1);
         //https://dotnetpattern.com/threading-semaphore

@@ -18,7 +18,7 @@ namespace database{
 
             ret += $"Het percentage bejaarden is { await PercentageBejaarden() }\n";
             ret += $"De oudste gast heeft een leeftijd van { await HoogsteLeeftijd() } \n";
-            //ret += $"{ await FavorietCorrect() } gasten hebben de favoriete attractie inderdaad het vaakst bezocht. \n";
+            ret += $"{ await FavorietCorrect() } gasten hebben de favoriete attractie inderdaad het vaakst bezocht. \n";
 
             return ret;
         }
@@ -30,6 +30,6 @@ namespace database{
         private async Task<double> PercentageBejaarden() => await Task<double>.Run(() => {return (double)context.DbGast.Where<Gast>(gast => (EF.Functions.DateDiffDay(gast.Geboortedatum, DateTime.Now) / 365) > 79).Count()/(double)(context.DbGebruiker.Count())*100;});
         private async Task<int> HoogsteLeeftijd() => await Task<int>.Run(() => {return context.DbGast.Select(gast => (int)(EF.Functions.DateDiffDay(gast.Geboortedatum, DateTime.Now) / 365)).Max();});
         private IEnumerable<Gast> Blut (IEnumerable<Gast> b) => b.Where(b => b.Credits < 1);
-        //private async Task<int> FavorietCorrect() => await Task<int>.Run(() => {return context.DbGast.Where(gast => gast.reservering.Where(k => gast.FavorieteAttractie !=null && k.GereserverdeAttracties.Equals(gast.FavorieteAttractie.Id)).Count() > (gast.reservering.Count()/2)).Count();}); 
+        private async Task<int> FavorietCorrect() => await Task<int>.Run(() => {return context.DbGast.Where(gast => gast.reservering.Where(k => gast.FavorieteAttractie !=null && k.GereserverdeAttracties.Id == gast.FavorieteAttractie.Id ).Count() > (gast.reservering.Count()/2)).Count();}); 
     }
 }

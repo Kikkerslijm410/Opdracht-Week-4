@@ -12,10 +12,10 @@ namespace database{
             await a.Satan.WaitAsync();
             try { 
                 if (a.reservering == null && a != null && g != null && d != null){
-                    var reservering = new Reservering {gast = g, DTB_Reservering = d};
+                    var reserveringX = new Reservering {gast = g, DTB_Reservering = d};
                     if (g.Credits >= 1){
                         g.Credits--;
-                        reservering.GereserverdeAttracties?.Add(a);
+                        g.reservering.Add(reserveringX);
                         this.SaveChanges();
                         return true;
                     }
@@ -66,7 +66,8 @@ namespace database{
             //Reservering
             var Reservering = builder.Entity<Reservering>();
                 Reservering.OwnsOne(o => o.DTB_Reservering);
-                Reservering.HasMany(f => f.GereserverdeAttracties).WithOne(f => f.reservering);
+                Reservering.HasOne(f => f.GereserverdeAttracties)
+                    .WithMany(f => f.reservering);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder){

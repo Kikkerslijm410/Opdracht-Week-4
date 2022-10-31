@@ -1,14 +1,11 @@
 ﻿global using Microsoft.EntityFrameworkCore; 
-global using Microsoft.EntityFrameworkCore.InMemory;
-namespace database{
-public class MainClass
-{
+namespace database;
+
+public class MainClass{
     private static async Task<T> Willekeurig<T>(DbContext c) where T : class => await c.Set<T>().OrderBy(r => EF.Functions.Random()).FirstAsync();
-    public static async Task Main(string[] args)
-    {
+    public static async Task Main(string[] args){
         Random random = new Random(1);
-        using (DatabaseContext c = new DatabaseContext())
-        {
+        using (DatabaseContext c = new DatabaseContext()){
             c.DbAttractie.RemoveRange(c.DbAttractie);
             c.DbGebruiker.RemoveRange(c.DbGebruiker);
             c.DbGast.RemoveRange(c.DbGast);
@@ -48,5 +45,4 @@ public class MainClass
             Console.ReadLine();
         }
     }
-}
 }
